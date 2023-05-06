@@ -6,7 +6,8 @@ class CustomUser(models.Model):
     """Default User model"""
     username = models.CharField(max_length=32, unique=True, null=False)
 
-    def add_friend(self, user) -> None:
+    def add_friend(self, user) -> int:
+        code = 1
         if not (Friendship.objects.filter(user1=user, user2=self).exists() or Friendship.objects.filter(user1=self, user2=user).exists()):
             request_received = FriendshipRequest.objects.filter(sender=user, reciever=self).first()
             if request_received:
@@ -14,9 +15,13 @@ class CustomUser(models.Model):
                     friendship.save()
                     request_received.is_confirmed = True
                     request_received.save()
+                    code = 0
             elif not FriendshipRequest.objects.filter(sender=self, reciever=user).exists():
                 friendship_request = FriendshipRequest.objects.create(sender=self, reciever=user)
                 friendship_request.save()
+                code = 0
+
+        return code
 
     def get_friends(self) -> models.QuerySet:
         friends_id = []
@@ -38,7 +43,24 @@ class FriendshipRequest(models.Model):
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='sender')
     reciever = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='reciever')
     is_confirmed = models.BooleanField(default=False)
+    
+    def accept(self, user_by):
+        code = 1
+        if user_by == self.reciever:
+            self.is_confirmed = True
+            self.save()
+            friendship = Friendship.objects.create(user1=self.sender, user2=self.reciever)
+            friendship.save()
+            code = 0
+        return code
 
+    def reject(self, user_by):
+        code = 1
+        if user_by == self.reciever or user_by == self.sender:
+            self.delete()
+            code = 0
+        return code
+    
     def __str__(self) -> str:
         return f'request from {str(self.sender)} to {str(self.reciever)}'
 
@@ -50,3 +72,4 @@ class Friendship(models.Model):
 
     def __str__(self) -> str:
         return f'{str(self.user2)} is a friend of {str(self.user1)}'
+
