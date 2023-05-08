@@ -1,0 +1,454 @@
+{
+  "openapi" : "3.0.2",
+  "info" : {
+    "title" : "Friends API",
+    "version" : "1.0"
+  },
+  "servers" : [ {
+    "url" : "/"
+  } ],
+  "paths" : {
+    "/api/users/" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "operationId" : "listUsers",
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/register/" : {
+      "post" : {
+        "tags" : [ "api" ],
+        "summary" : "Creates a new user.",
+        "parameters" : [ {
+          "name" : "username",
+          "in" : "query",
+          "description" : "The username of User.",
+          "required" : false,
+          "content" : {
+            "text/plain" : {
+              "schema" : {
+                "type" : "string",
+                "example" : "George"
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "201" : {
+            "description" : "Created"
+          }
+        }
+      }
+    },
+    "/api/users/{id}/" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "description" : "",
+        "operationId" : "retrieveUser",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "A unique integer value identifying this user.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}/status_with/" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "description" : "",
+        "operationId" : "statusWithUser",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "A unique integer value identifying this user.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        }, {
+          "name" : "user_id",
+          "in" : "query",
+          "description" : "A unique integer value identifying athother user.",
+          "required" : false,
+          "content" : {
+            "text/plain" : {
+              "schema" : {
+                "type" : "integer",
+                "example" : 2
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RelationStatus"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}/friends/" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "description" : "",
+        "operationId" : "listFriends",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "A unique integer value identifying this user.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/User"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}/friends/add/" : {
+      "post" : {
+        "tags" : [ "api" ],
+        "summary" : "Send a friendship request.",
+        "operationId" : "addFriend",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        }, {
+          "name" : "user_id",
+          "in" : "query",
+          "description" : "The id of request user.",
+          "required" : false,
+          "content" : {
+            "text/plain" : {
+              "schema" : {
+                "type" : "integer",
+                "example" : 2
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok"
+          }
+        }
+      }
+    },
+    "/api/users/{id}/friends/delete/" : {
+      "post" : {
+        "tags" : [ "api" ],
+        "summary" : "Delete a friend from friends list.",
+        "operationId" : "deleteFriend",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        }, {
+          "name" : "user_id",
+          "in" : "query",
+          "description" : "The id of friend.",
+          "required" : false,
+          "content" : {
+            "text/plain" : {
+              "schema" : {
+                "type" : "integer",
+                "example" : 2
+              }
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok"
+          }
+        }
+      }
+    },
+    "/api/users/{id}/requests/" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "description" : "Get all requests of user",
+        "operationId" : "listRequests",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "A unique integer value identifying this user.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/FriendshipRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}/requests/sent" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "description" : "Get sent requests",
+        "operationId" : "listRequestsSent",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "A unique integer value identifying this user.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/FriendshipRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}/requests/recieved" : {
+      "get" : {
+        "tags" : [ "api" ],
+        "description" : "Get recieved requests",
+        "operationId" : "listRequestsRecieved",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "A unique integer value identifying this user.",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/FriendshipRequest"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/{id}/requests/{request_id}/accept" : {
+      "post" : {
+        "tags" : [ "api" ],
+        "summary" : "Accept a friendship request.",
+        "operationId" : "acceptRequest",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        }, {
+          "name" : "request_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok"
+          }
+        }
+      }
+    },
+    "/api/users/{id}/requests/{request_id}/reject" : {
+      "post" : {
+        "tags" : [ "api" ],
+        "summary" : "Reject a friendship request.",
+        "operationId" : "rejectRequest",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        }, {
+          "name" : "request_id",
+          "in" : "path",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Ok"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "User" : {
+        "required" : [ "username" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "readOnly" : true
+          },
+          "username" : {
+            "maxLength" : 32,
+            "type" : "string"
+          }
+        }
+      },
+      "FriendshipRequest" : {
+        "required" : [ "reciever_id", "sender_id" ],
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "readOnly" : true
+          },
+          "sender_id" : {
+            "type" : "integer",
+            "readOnly" : true
+          },
+          "reciever_id" : {
+            "type" : "integer",
+            "readOnly" : true
+          }
+        }
+      },
+      "RelationStatus" : {
+        "type" : "object",
+        "properties" : {
+          "status" : {
+            "type" : "string",
+            "readOnly" : true
+          },
+          "message" : {
+            "type" : "string",
+            "readOnly" : true
+          }
+        }
+      }
+    }
+  }
+}
