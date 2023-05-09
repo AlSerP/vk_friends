@@ -720,6 +720,20 @@
     }
   }
 };
+            defs["Response"] = {
+  "type" : "object",
+  "properties" : {
+    "status" : {
+      "type" : "integer"
+    },
+    "message" : {
+      "type" : "string"
+    },
+    "error" : {
+      "type" : "string"
+    }
+  }
+};
             defs["User"] = {
   "required" : [ "username" ],
   "type" : "object",
@@ -841,6 +855,7 @@
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Api-acceptRequest-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Accept: application/json"\
 "//api/users/{id}/requests/{request_id}/accept"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Api-acceptRequest-0-java">
@@ -860,7 +875,8 @@ public class ApiApiExample {
         Integer id = 56; // Integer | 
         Integer requestId = 56; // Integer | 
         try {
-            apiInstance.acceptRequest(id, requestId);
+            Response result = apiInstance.acceptRequest(id, requestId);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ApiApi#acceptRequest");
             e.printStackTrace();
@@ -879,7 +895,8 @@ public class ApiApiExample {
         Integer id = 56; // Integer | 
         Integer requestId = 56; // Integer | 
         try {
-            apiInstance.acceptRequest(id, requestId);
+            Response result = apiInstance.acceptRequest(id, requestId);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ApiApi#acceptRequest");
             e.printStackTrace();
@@ -900,7 +917,10 @@ ApiApi *apiInstance = [[ApiApi alloc] init];
 // Accept a friendship request.
 [apiInstance acceptRequestWith:id
     requestId:requestId
-              completionHandler: ^(NSError* error) {
+              completionHandler: ^(Response output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
                             if (error) {
                                 NSLog(@"Error: %@", error);
                             }
@@ -919,7 +939,7 @@ var callback = function(error, data, response) {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 };
 api.acceptRequest(id, requestId, callback);
@@ -950,7 +970,8 @@ namespace Example
             try
             {
                 // Accept a friendship request.
-                apiInstance.acceptRequest(id, requestId);
+                Response result = apiInstance.acceptRequest(id, requestId);
+                Debug.WriteLine(result);
             }
             catch (Exception e)
             {
@@ -971,7 +992,8 @@ $id = 56; // Integer |
 $requestId = 56; // Integer | 
 
 try {
-    $api_instance->acceptRequest($id, $requestId);
+    $result = $api_instance->acceptRequest($id, $requestId);
+    print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ApiApi->acceptRequest: ', $e->getMessage(), PHP_EOL;
 }
@@ -988,7 +1010,8 @@ my $id = 56; # Integer |
 my $requestId = 56; # Integer | 
 
 eval { 
-    $api_instance->acceptRequest(id => $id, requestId => $requestId);
+    my $result = $api_instance->acceptRequest(id => $id, requestId => $requestId);
+    print Dumper($result);
 };
 if ($@) {
     warn "Exception when calling ApiApi->acceptRequest: $@\n";
@@ -1009,7 +1032,8 @@ requestId = 56 # Integer |
 
 try: 
     # Accept a friendship request.
-    api_instance.accept_request(id, requestId)
+    api_response = api_instance.accept_request(id, requestId)
+    pprint(api_response)
 except ApiException as e:
     print("Exception when calling ApiApi->acceptRequest: %s\n" % e)</code></pre>
                             </div>
@@ -1071,9 +1095,49 @@ except ApiException as e:
                             <h3> Status: 200 - Ok </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-acceptRequest-200-schema">Schema</a>
+                                </li>
+
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-acceptRequest-200-schema">
+                                  <div id='responses-acceptRequest-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Ok",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Response"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-acceptRequest-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-acceptRequest-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-acceptRequest-200-schema-data' type='hidden' value=''></input>
+                                </div>
                             </div>
 
                         </article>
@@ -1112,6 +1176,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Api-addFriend-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Accept: application/json"\
 "//api/users/{id}/friends/add/?user_id="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Api-addFriend-0-java">
@@ -1131,7 +1196,8 @@ public class ApiApiExample {
         Integer id = 56; // Integer | 
         Integer userId = 56; // Integer | The id of request user.
         try {
-            apiInstance.addFriend(id, userId);
+            Response result = apiInstance.addFriend(id, userId);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ApiApi#addFriend");
             e.printStackTrace();
@@ -1150,7 +1216,8 @@ public class ApiApiExample {
         Integer id = 56; // Integer | 
         Integer userId = 56; // Integer | The id of request user.
         try {
-            apiInstance.addFriend(id, userId);
+            Response result = apiInstance.addFriend(id, userId);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ApiApi#addFriend");
             e.printStackTrace();
@@ -1171,7 +1238,10 @@ ApiApi *apiInstance = [[ApiApi alloc] init];
 // Send a friendship request.
 [apiInstance addFriendWith:id
     userId:userId
-              completionHandler: ^(NSError* error) {
+              completionHandler: ^(Response output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
                             if (error) {
                                 NSLog(@"Error: %@", error);
                             }
@@ -1191,7 +1261,7 @@ var callback = function(error, data, response) {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 };
 api.addFriend(id, opts, callback);
@@ -1222,7 +1292,8 @@ namespace Example
             try
             {
                 // Send a friendship request.
-                apiInstance.addFriend(id, userId);
+                Response result = apiInstance.addFriend(id, userId);
+                Debug.WriteLine(result);
             }
             catch (Exception e)
             {
@@ -1243,7 +1314,8 @@ $id = 56; // Integer |
 $userId = 56; // Integer | The id of request user.
 
 try {
-    $api_instance->addFriend($id, $userId);
+    $result = $api_instance->addFriend($id, $userId);
+    print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ApiApi->addFriend: ', $e->getMessage(), PHP_EOL;
 }
@@ -1260,7 +1332,8 @@ my $id = 56; # Integer |
 my $userId = 56; # Integer | The id of request user.
 
 eval { 
-    $api_instance->addFriend(id => $id, userId => $userId);
+    my $result = $api_instance->addFriend(id => $id, userId => $userId);
+    print Dumper($result);
 };
 if ($@) {
     warn "Exception when calling ApiApi->addFriend: $@\n";
@@ -1281,7 +1354,8 @@ userId = 56 # Integer | The id of request user. (optional)
 
 try: 
     # Send a friendship request.
-    api_instance.add_friend(id, userId=userId)
+    api_response = api_instance.add_friend(id, userId=userId)
+    pprint(api_response)
 except ApiException as e:
     print("Exception when calling ApiApi->addFriend: %s\n" % e)</code></pre>
                             </div>
@@ -1350,9 +1424,49 @@ except ApiException as e:
                             <h3> Status: 200 - Ok </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-addFriend-200-schema">Schema</a>
+                                </li>
+
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-addFriend-200-schema">
+                                  <div id='responses-addFriend-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Ok",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Response"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-addFriend-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-addFriend-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-addFriend-200-schema-data' type='hidden' value=''></input>
+                                </div>
                             </div>
 
                         </article>
@@ -1391,6 +1505,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Api-apiUsersRegisterPost-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Accept: application/json"\
 "//api/users/register/?username="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Api-apiUsersRegisterPost-0-java">
@@ -1409,7 +1524,8 @@ public class ApiApiExample {
         ApiApi apiInstance = new ApiApi();
         String username = username_example; // String | The username of User.
         try {
-            apiInstance.apiUsersRegisterPost(username);
+            Response result = apiInstance.apiUsersRegisterPost(username);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ApiApi#apiUsersRegisterPost");
             e.printStackTrace();
@@ -1427,7 +1543,8 @@ public class ApiApiExample {
         ApiApi apiInstance = new ApiApi();
         String username = username_example; // String | The username of User.
         try {
-            apiInstance.apiUsersRegisterPost(username);
+            Response result = apiInstance.apiUsersRegisterPost(username);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ApiApi#apiUsersRegisterPost");
             e.printStackTrace();
@@ -1446,7 +1563,10 @@ ApiApi *apiInstance = [[ApiApi alloc] init];
 
 // Creates a new user.
 [apiInstance apiUsersRegisterPostWith:username
-              completionHandler: ^(NSError* error) {
+              completionHandler: ^(Response output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
                             if (error) {
                                 NSLog(@"Error: %@", error);
                             }
@@ -1465,7 +1585,7 @@ var callback = function(error, data, response) {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 };
 api.apiUsersRegisterPost(opts, callback);
@@ -1495,7 +1615,8 @@ namespace Example
             try
             {
                 // Creates a new user.
-                apiInstance.apiUsersRegisterPost(username);
+                Response result = apiInstance.apiUsersRegisterPost(username);
+                Debug.WriteLine(result);
             }
             catch (Exception e)
             {
@@ -1515,7 +1636,8 @@ $api_instance = new Swagger\Client\ApiApiApi();
 $username = username_example; // String | The username of User.
 
 try {
-    $api_instance->apiUsersRegisterPost($username);
+    $result = $api_instance->apiUsersRegisterPost($username);
+    print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ApiApi->apiUsersRegisterPost: ', $e->getMessage(), PHP_EOL;
 }
@@ -1531,7 +1653,8 @@ my $api_instance = WWW::SwaggerClient::ApiApi->new();
 my $username = username_example; # String | The username of User.
 
 eval { 
-    $api_instance->apiUsersRegisterPost(username => $username);
+    my $result = $api_instance->apiUsersRegisterPost(username => $username);
+    print Dumper($result);
 };
 if ($@) {
     warn "Exception when calling ApiApi->apiUsersRegisterPost: $@\n";
@@ -1551,7 +1674,8 @@ username = username_example # String | The username of User. (optional)
 
 try: 
     # Creates a new user.
-    api_instance.api_users_register_post(username=username)
+    api_response = api_instance.api_users_register_post(username=username)
+    pprint(api_response)
 except ApiException as e:
     print("Exception when calling ApiApi->apiUsersRegisterPost: %s\n" % e)</code></pre>
                             </div>
@@ -1594,9 +1718,49 @@ except ApiException as e:
                             <h3> Status: 201 - Created </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-apiUsersRegisterPost-201-schema">Schema</a>
+                                </li>
+
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-apiUsersRegisterPost-201-schema">
+                                  <div id='responses-apiUsersRegisterPost-201-schema-201' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Created",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Response"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-apiUsersRegisterPost-201-schema-data').val(stringify(schema));
+                                        var result = $('#responses-apiUsersRegisterPost-201-schema-201');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-apiUsersRegisterPost-201-schema-data' type='hidden' value=''></input>
+                                </div>
                             </div>
 
                         </article>
@@ -1635,6 +1799,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Api-deleteFriend-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Accept: application/json"\
 "//api/users/{id}/friends/delete/?user_id="</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Api-deleteFriend-0-java">
@@ -1654,7 +1819,8 @@ public class ApiApiExample {
         Integer id = 56; // Integer | 
         Integer userId = 56; // Integer | The id of friend.
         try {
-            apiInstance.deleteFriend(id, userId);
+            Response result = apiInstance.deleteFriend(id, userId);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ApiApi#deleteFriend");
             e.printStackTrace();
@@ -1673,7 +1839,8 @@ public class ApiApiExample {
         Integer id = 56; // Integer | 
         Integer userId = 56; // Integer | The id of friend.
         try {
-            apiInstance.deleteFriend(id, userId);
+            Response result = apiInstance.deleteFriend(id, userId);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ApiApi#deleteFriend");
             e.printStackTrace();
@@ -1694,7 +1861,10 @@ ApiApi *apiInstance = [[ApiApi alloc] init];
 // Delete a friend from friends list.
 [apiInstance deleteFriendWith:id
     userId:userId
-              completionHandler: ^(NSError* error) {
+              completionHandler: ^(Response output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
                             if (error) {
                                 NSLog(@"Error: %@", error);
                             }
@@ -1714,7 +1884,7 @@ var callback = function(error, data, response) {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 };
 api.deleteFriend(id, opts, callback);
@@ -1745,7 +1915,8 @@ namespace Example
             try
             {
                 // Delete a friend from friends list.
-                apiInstance.deleteFriend(id, userId);
+                Response result = apiInstance.deleteFriend(id, userId);
+                Debug.WriteLine(result);
             }
             catch (Exception e)
             {
@@ -1766,7 +1937,8 @@ $id = 56; // Integer |
 $userId = 56; // Integer | The id of friend.
 
 try {
-    $api_instance->deleteFriend($id, $userId);
+    $result = $api_instance->deleteFriend($id, $userId);
+    print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ApiApi->deleteFriend: ', $e->getMessage(), PHP_EOL;
 }
@@ -1783,7 +1955,8 @@ my $id = 56; # Integer |
 my $userId = 56; # Integer | The id of friend.
 
 eval { 
-    $api_instance->deleteFriend(id => $id, userId => $userId);
+    my $result = $api_instance->deleteFriend(id => $id, userId => $userId);
+    print Dumper($result);
 };
 if ($@) {
     warn "Exception when calling ApiApi->deleteFriend: $@\n";
@@ -1804,7 +1977,8 @@ userId = 56 # Integer | The id of friend. (optional)
 
 try: 
     # Delete a friend from friends list.
-    api_instance.delete_friend(id, userId=userId)
+    api_response = api_instance.delete_friend(id, userId=userId)
+    pprint(api_response)
 except ApiException as e:
     print("Exception when calling ApiApi->deleteFriend: %s\n" % e)</code></pre>
                             </div>
@@ -1873,9 +2047,49 @@ except ApiException as e:
                             <h3> Status: 200 - Ok </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-deleteFriend-200-schema">Schema</a>
+                                </li>
+
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-deleteFriend-200-schema">
+                                  <div id='responses-deleteFriend-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Ok",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Response"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-deleteFriend-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-deleteFriend-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-deleteFriend-200-schema-data' type='hidden' value=''></input>
+                                </div>
                             </div>
 
                         </article>
@@ -3361,6 +3575,7 @@ except ApiException as e:
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Api-rejectRequest-0-curl">
                            <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Accept: application/json"\
 "//api/users/{id}/requests/{request_id}/reject"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-Api-rejectRequest-0-java">
@@ -3380,7 +3595,8 @@ public class ApiApiExample {
         Integer id = 56; // Integer | 
         Integer requestId = 56; // Integer | 
         try {
-            apiInstance.rejectRequest(id, requestId);
+            Response result = apiInstance.rejectRequest(id, requestId);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ApiApi#rejectRequest");
             e.printStackTrace();
@@ -3399,7 +3615,8 @@ public class ApiApiExample {
         Integer id = 56; // Integer | 
         Integer requestId = 56; // Integer | 
         try {
-            apiInstance.rejectRequest(id, requestId);
+            Response result = apiInstance.rejectRequest(id, requestId);
+            System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ApiApi#rejectRequest");
             e.printStackTrace();
@@ -3420,7 +3637,10 @@ ApiApi *apiInstance = [[ApiApi alloc] init];
 // Reject a friendship request.
 [apiInstance rejectRequestWith:id
     requestId:requestId
-              completionHandler: ^(NSError* error) {
+              completionHandler: ^(Response output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
                             if (error) {
                                 NSLog(@"Error: %@", error);
                             }
@@ -3439,7 +3659,7 @@ var callback = function(error, data, response) {
   if (error) {
     console.error(error);
   } else {
-    console.log('API called successfully.');
+    console.log('API called successfully. Returned data: ' + data);
   }
 };
 api.rejectRequest(id, requestId, callback);
@@ -3470,7 +3690,8 @@ namespace Example
             try
             {
                 // Reject a friendship request.
-                apiInstance.rejectRequest(id, requestId);
+                Response result = apiInstance.rejectRequest(id, requestId);
+                Debug.WriteLine(result);
             }
             catch (Exception e)
             {
@@ -3491,7 +3712,8 @@ $id = 56; // Integer |
 $requestId = 56; // Integer | 
 
 try {
-    $api_instance->rejectRequest($id, $requestId);
+    $result = $api_instance->rejectRequest($id, $requestId);
+    print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ApiApi->rejectRequest: ', $e->getMessage(), PHP_EOL;
 }
@@ -3508,7 +3730,8 @@ my $id = 56; # Integer |
 my $requestId = 56; # Integer | 
 
 eval { 
-    $api_instance->rejectRequest(id => $id, requestId => $requestId);
+    my $result = $api_instance->rejectRequest(id => $id, requestId => $requestId);
+    print Dumper($result);
 };
 if ($@) {
     warn "Exception when calling ApiApi->rejectRequest: $@\n";
@@ -3529,7 +3752,8 @@ requestId = 56 # Integer |
 
 try: 
     # Reject a friendship request.
-    api_instance.reject_request(id, requestId)
+    api_response = api_instance.reject_request(id, requestId)
+    pprint(api_response)
 except ApiException as e:
     print("Exception when calling ApiApi->rejectRequest: %s\n" % e)</code></pre>
                             </div>
@@ -3591,9 +3815,49 @@ except ApiException as e:
                             <h3> Status: 200 - Ok </h3>
 
                             <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-rejectRequest-200-schema">Schema</a>
+                                </li>
+
                             </ul>
 
                             <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-rejectRequest-200-schema">
+                                  <div id='responses-rejectRequest-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Ok",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/Response"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-rejectRequest-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-rejectRequest-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-rejectRequest-200-schema-data' type='hidden' value=''></input>
+                                </div>
                             </div>
 
                         </article>
@@ -3904,7 +4168,7 @@ except ApiException as e:
                         <p class="marked"></p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/api/users/{id}/status_with/</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/api/users/{id}/status_with/</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
@@ -3924,7 +4188,7 @@ except ApiException as e:
 
                         <div class="tab-content">
                           <div class="tab-pane active" id="examples-Api-statusWithUser-0-curl">
-                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
 -H "Accept: application/json"\
 "//api/users/{id}/status_with/?user_id="</code></pre>
                           </div>
