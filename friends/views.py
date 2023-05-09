@@ -9,7 +9,7 @@ def get_users(request):
     response = {}
     status_code = 200
     if request.method == 'GET':
-        response = list(CustomUser.objects.values())
+        response['users'] = list(CustomUser.objects.values())
         response['status'] = 0
     else:
         response['error'] = 'Wrong method'
